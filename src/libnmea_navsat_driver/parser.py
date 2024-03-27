@@ -304,7 +304,10 @@ def parse_nmea_sentence(nmea_sentence):
 
     parsed_sentence = {}
     for entry in parse_map:
-        parsed_sentence[entry[0]] = entry[1](fields[entry[2]])
+        if entry[2] == 6 and len(fields[entry[2]]) == 0:
+            parsed_sentence[entry[0]] = 0
+        else:
+            parsed_sentence[entry[0]] = entry[1](fields[entry[2]])
 
     if sentence_type == "RMC":
         parsed_sentence["utc_time"] = convert_time_rmc(fields[9], fields[1])

@@ -194,7 +194,6 @@ class RosNMEADriver(object):
                 NavSatFix.COVARIANCE_TYPE_APPROXIMATED
 
             data = parsed_sentence['GGA']
-
             if self.use_GNSS_time:
                 if math.isnan(data['utc_time'][0]):
                     rospy.logwarn("Time in the NMEA sentence is NOT valid")
@@ -244,7 +243,7 @@ class RosNMEADriver(object):
 
             self.fix_pub.publish(current_fix)
 
-            if not (math.isnan(data['utc_time'][0]) or self.use_GNSS_time):
+            if (not math.isnan(data['utc_time'][0])) and self.use_GNSS_time:
                 current_time_ref.time_ref = rospy.Time(
                     data['utc_time'][0], data['utc_time'][1])
                 self.last_valid_fix_time = current_time_ref
